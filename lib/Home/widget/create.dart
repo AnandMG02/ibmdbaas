@@ -4,14 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ibmdbaas/Home/controller/appwidget.dart';
 import 'package:ibmdbaas/Home/controller/dashcontroller.dart';
+import 'package:ibmdbaas/Home/controller/formdatacontroller.dart';
+import 'package:ibmdbaas/Home/widget/clusterbutton.dart';
+import 'package:ibmdbaas/Home/widget/credentials.dart';
 import 'package:ibmdbaas/Home/widget/dropdown.dart';
+import 'package:ibmdbaas/Home/widget/servertype.dart';
 
 class Create extends StatelessWidget {
   Create({super.key});
 
   final AppMainbar appbar = Get.find();
-
   final DashController dashCtrl = Get.find();
+  final FormDataController formCtrl =
+      Get.put(FormDataController(), permanent: true);
+
+  final TextEditingController _namecontroller =
+      TextEditingController(text: "cluster01");
+
+  //function
+
+  Widget sizebox() {
+    return SizedBox(
+      height: Get.height * 0.1,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,152 +50,113 @@ class Create extends StatelessWidget {
             child: Container(
               padding:
                   const EdgeInsets.only(top: 30, left: 0, right: 0, bottom: 0),
-              height: Get.height,
+              height: Get.height * 1.5,
               width: Get.width,
-              child: Column(
-                children: [
-                  GetX<DashController>(
-                    builder: (_) => Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Card(
-                          child: MouseRegion(
-                            cursor: SystemMouseCursors.click,
-                            onEnter: (event) {
-                              dashCtrl.dedicated(true);
-                            },
-                            // onExit: (event) {
-                            //   dashCtrl.dedicated(false);
-                            // },
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        width: 2,
-                                        color: dashCtrl.createDedicated.value
-                                            ? Get.theme.primaryColor
-                                            : Colors.white)),
+              child: Form(
+                key: formCtrl.myFormKey,
+                child: Column(
+                  children: [
+                    ServerType(),
+                    sizebox(),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                              width: 2, color: Get.theme.primaryColor)),
+                      width: Get.width * 0.8,
+                      child: Card(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Text(
+                                "Cluster Tier",
+                                style: TextStyle(
+                                    color: Get.theme.primaryColor,
+                                    fontSize: 20),
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(right: 50),
+                              height: Get.height * 0.1,
+                              width: Get.width * 0.35,
+                              child: DropDown(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    sizebox(),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                              width: 2, color: Get.theme.primaryColor)),
+                      width: Get.width * 0.8,
+                      height: Get.height * 0.13,
+                      child: Card(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Text(
+                                "Cluster Name",
+                                style: TextStyle(
+                                    color: Get.theme.primaryColor,
+                                    fontSize: 20),
+                              ),
+                            ),
+                            Container(
+                                padding: EdgeInsets.only(right: 50),
                                 width: Get.width * 0.2,
-                                height: Get.height * 0.1,
-                                child: const Center(child: Text("Dedicated"))),
-                          ),
-                        ),
-                        Card(
-                          child: MouseRegion(
-                            cursor: SystemMouseCursors.click,
-                            onEnter: (event) {
-                              dashCtrl.shared(true);
-                              dashCtrl.dedicated(false);
-                            },
-                            onExit: (event) {
-                              dashCtrl.shared(false);
-                              dashCtrl.dedicated(true);
-                            },
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                        width: 2,
-                                        color: dashCtrl.createShared.value
-                                            ? Get.theme.primaryColor
-                                            : Colors.white)),
-                                width: Get.width * 0.2,
-                                height: Get.height * 0.1,
-                                child: const Center(child: Text("Shared"))),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: Get.height * 0.1,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                            width: 2, color: Get.theme.primaryColor)),
-                    width: Get.width * 0.8,
-                    child: Card(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            "Cluster Tier",
-                            style: TextStyle(
-                                color: Get.theme.primaryColor, fontSize: 20),
-                          ),
-                          Container(
-                            height: Get.height * 0.1,
-                            width: Get.width * 0.5,
-                            child: DropDown(),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: Get.height * 0.1,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                            width: 2, color: Get.theme.primaryColor)),
-                    width: Get.width * 0.8,
-                    height: Get.height * 0.13,
-                    child: Card(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            "Cluster Name",
-                            style: TextStyle(
-                                color: Get.theme.primaryColor, fontSize: 20),
-                          ),
-                          Container(
-                              width: Get.width * 0.2,
-                              child: TextFormField(
-                                initialValue: "Cluster01",
-                                textAlign: TextAlign.center,
-                                textAlignVertical: TextAlignVertical.center,
-                              )),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: Get.height * 0.1,
-                  ),
-                  Center(
-                    child: TextButton.icon(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Get.theme.primaryColor),
-                      ),
-                      onPressed: () {},
-                      icon: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Icon(
-                          Icons.save,
-                          color: Colors.white,
-                        ),
-                      ),
-                      label: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          "Create Cluster",
-                          style: TextStyle(fontSize: 24, color: Colors.white),
+                                child: Center(
+                                  child: TextFormField(
+                                    controller: _namecontroller,
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Name shouldnt start with Num or Capital letter';
+                                      }
+                                      return null;
+                                    },
+                                    onSaved: (val) {
+                                      formCtrl.setClusterName(val);
+                                    },
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        borderSide: BorderSide(
+                                          color: Colors.grey,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      labelText: 'Cluster Name',
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    textAlignVertical: TextAlignVertical.center,
+                                  ),
+                                )),
+                          ],
                         ),
                       ),
                     ),
-                  )
-                ],
+                    sizebox(),
+                    Credentials(),
+                    sizebox(),
+                    ClusterButton()
+                  ],
+                ),
               ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  void dispose() {
+    _namecontroller.dispose();
   }
 }
