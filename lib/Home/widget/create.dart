@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:ibmdbaas/Home/controller/appwidget.dart';
 import 'package:ibmdbaas/Home/controller/dashcontroller.dart';
 import 'package:ibmdbaas/Home/controller/formdatacontroller.dart';
+import 'package:ibmdbaas/Home/controller/responsecontroller.dart';
 import 'package:ibmdbaas/Home/widget/clusterbutton.dart';
 import 'package:ibmdbaas/Home/widget/credentials.dart';
 import 'package:ibmdbaas/Home/widget/dropdown.dart';
@@ -17,6 +18,7 @@ class Create extends StatelessWidget {
   final DashController dashCtrl = Get.find();
   final FormDataController formCtrl =
       Get.put(FormDataController(), permanent: true);
+  final ResponseController resCtrl = Get.put(ResponseController());
 
   final TextEditingController _namecontroller =
       TextEditingController(text: "cluster01");
@@ -34,7 +36,10 @@ class Create extends StatelessWidget {
     return Scaffold(
       appBar: appbar.appmainbar([
         GestureDetector(
-            onTap: () => Get.back(),
+            onTap: () {
+              resCtrl.getData();
+              Get.back();
+            },
             child: const Padding(
               padding: EdgeInsets.only(top: 10.0, right: 30),
               child: Icon(

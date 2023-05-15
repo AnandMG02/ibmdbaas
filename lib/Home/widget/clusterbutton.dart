@@ -7,7 +7,7 @@ import 'package:ibmdbaas/Home/controller/datamodel.dart';
 import 'package:http/http.dart' as http;
 import 'package:ibmdbaas/Home/controller/formdatacontroller.dart';
 import 'package:ibmdbaas/Home/controller/responsecontroller.dart';
-import 'package:ibmdbaas/Home/controller/responseModel.dart';
+import 'package:ibmdbaas/Home/controller/responsemodel.dart';
 
 class ClusterButton extends StatelessWidget {
   ClusterButton({super.key});
@@ -46,7 +46,9 @@ class ClusterButton extends StatelessWidget {
           url: res['url'],
           status: res['status'],
         );
+
         dashCtrl.isActive.value = true;
+
         resCtrl.updateResData(resValue);
       } catch (e) {
         print('Error decoding JSON response: $e');

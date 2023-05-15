@@ -19,7 +19,7 @@ class Dashboard extends StatelessWidget {
 
   final AppMainbar appbar = Get.put(AppMainbar());
 
-  var items = [Deployment(), Settings(), Billing()];
+  final items = [Deployment(), Settings(), Billing()];
 
   @override
   Widget build(BuildContext context) {

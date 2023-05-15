@@ -100,7 +100,6 @@ class Credentials extends StatelessWidget {
     );
   }
 
-  @override
   void dispose() {
     _pwdcontroller
         .dispose(); // Dispose of the controller when the screen is disposed

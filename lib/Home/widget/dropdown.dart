@@ -9,7 +9,7 @@ class DropDown extends StatelessWidget {
   final DashController dashctrl = Get.find();
   final FormDataController formCtrl = Get.find();
 
-  List<RxString> items = [
+  final List<RxString> items = [
     'OC10 : 2 GB RAM , 10 GB Storage , 2 vCPU'.obs,
     'OC20 : 4 GB RAM , 20 GB Storage , 4 vCPU'.obs,
     'OC30 : 2 GB RAM , 30 GB Storage , 2 vCPU'.obs,
