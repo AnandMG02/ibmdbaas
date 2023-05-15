@@ -82,6 +82,8 @@ class ClusterButton extends StatelessWidget {
 
             sendData(data);
             dashCtrl.deployChange(true);
+            resCtrl.getData();
+            Get.back();
           }
         },
         icon: const Padding(
