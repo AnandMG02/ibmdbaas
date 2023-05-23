@@ -9,9 +9,9 @@ final ResponseController resCtrl = Get.put(ResponseController());
 
 class ResponseController extends GetxController {
   final client = http.Client();
-  //final url = "http://localhost:3000/pods";
-  final url =
-      "https://nodeserver-ibmdbaas-hackathon2023-mongo-t-mobile.mycluster-wdc04-b3c-16x64-bcd9381b2e59a32911540577d00720d7-0000.us-east.containers.appdomain.cloud/pods";
+  final url = "http://localhost:3000/pods";
+  // final url =
+  //  "https://ibmdbaas-nodeserver-git-hackathon2023-mongo-t-mobile.mycluster-wdc04-b3c-16x64-bcd9381b2e59a32911540577d00720d7-0000.us-east.containers.appdomain.cloud/pods";
   late List<ResponseValue> resValue = [];
   final RxBool isLoading = false.obs;
 
@@ -35,6 +35,7 @@ class ResponseController extends GetxController {
   }
 
   pushResData(List<ResponseValue> val) {
+    changeLoading(false);
     data.clear();
     dashCtrl.isdeployed.value = true;
     data.addAll(val);
@@ -50,6 +51,7 @@ class ResponseController extends GetxController {
     if (resp.statusCode == 200) {
       try {
         final res = json.decode(resp.body);
+        print(res);
         resValue.clear();
         if (res.length > 0) {
           for (var i = 0; i < res.length; i++) {
@@ -65,6 +67,7 @@ class ResponseController extends GetxController {
           resCtrl.pushResData(resValue);
         } else {
           dashCtrl.isdeployed.value = false;
+          resCtrl.changeLoading(false);
         }
       } catch (e) {
         print('Error decoding JSON response: $e');
@@ -72,7 +75,7 @@ class ResponseController extends GetxController {
     } else {
       print('Error: ${resp.statusCode}');
     }
-    changeLoading(false);
+
     return resp;
   }
 
