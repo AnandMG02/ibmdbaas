@@ -8,12 +8,14 @@ import 'package:http/http.dart' as http;
 import 'package:ibmdbaas/Home/controller/formdatacontroller.dart';
 import 'package:ibmdbaas/Home/controller/responsecontroller.dart';
 import 'package:ibmdbaas/Home/controller/responsemodel.dart';
+import 'package:ibmdbaas/Home/page/dashboard.dart';
 
 class ClusterButton extends StatelessWidget {
   ClusterButton({super.key});
 
   final client = http.Client();
-  final url = "http://localhost:3000/";
+  final url =
+      "https://nodeserver-ibmdbaas-hackathon2023-mongo-t-mobile.mycluster-wdc04-b3c-16x64-bcd9381b2e59a32911540577d00720d7-0000.us-east.containers.appdomain.cloud/";
 
   final DashController dashCtrl = Get.find();
   final FormDataController formCtrl = Get.find();
@@ -62,45 +64,58 @@ class ClusterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: TextButton.icon(
-        style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.all<Color>(Get.theme.primaryColor),
-        ),
-        onPressed: () {
-          if (formCtrl.myFormKey.currentState!.validate()) {
-            formCtrl.myFormKey.currentState!.save();
+    return Obx(
+      () => resCtrl.isLoading.value
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Center(
+              child: TextButton.icon(
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Get.theme.primaryColor),
+                ),
+                onPressed: () {
+                  resCtrl.changeLoading(true);
+                  if (formCtrl.myFormKey.currentState!.validate()) {
+                    formCtrl.myFormKey.currentState!.save();
 
-            final data = Data(
-                cluster: formCtrl.clusterName.value,
-                user: formCtrl.user.value,
-                pwd: formCtrl.pwd.value,
-                cpu: formCtrl.cpu.value,
-                ram: formCtrl.ram.value,
-                storage: formCtrl.storage.value);
+                    final data = Data(
+                        cluster: formCtrl.clusterName.value,
+                        user: formCtrl.user.value,
+                        pwd: formCtrl.pwd.value,
+                        cpu: formCtrl.cpu.value,
+                        ram: formCtrl.ram.value,
+                        storage: formCtrl.storage.value);
 
-            sendData(data);
-            dashCtrl.deployChange(true);
-            resCtrl.getData();
-            Get.back();
-          }
-        },
-        icon: const Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Icon(
-            Icons.save,
-            color: Colors.white,
-          ),
-        ),
-        label: const Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Text(
-            "Create Cluster",
-            style: TextStyle(fontSize: 24, color: Colors.white),
-          ),
-        ),
-      ),
+                    sendData(data);
+                    dashCtrl.deployChange(true);
+                    resCtrl.getData().then(
+                          (value) => Get.to(
+                            Dashboard(),
+                            transition: Transition.fade,
+                            duration: const Duration(
+                                seconds: 1), // Set the transition duration
+                          ),
+                        );
+                  }
+                },
+                icon: const Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Icon(
+                    Icons.save,
+                    color: Colors.white,
+                  ),
+                ),
+                label: const Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text(
+                    "Create Cluster",
+                    style: TextStyle(fontSize: 24, color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
     );
   }
 }

@@ -33,6 +33,7 @@ class Deployment extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 20.0),
                   child: IconButton(
                       onPressed: () {
+                        resCtrl.changeLoading(true);
                         resCtrl.getData();
                       },
                       icon: const Icon(Icons.refresh)),
@@ -42,17 +43,21 @@ class Deployment extends StatelessWidget {
             SizedBox(
               height: Get.height * 0.05,
             ),
-            Card(
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: Obx(
-                () => SizedBox(
-                    height: Get.height * 0.6,
-                    width: Get.width * 0.8,
-                    child: dashCtrl.isdeployed.value
-                        ? SingleChildScrollView(child: ClusterTable())
-                        : const Center(child: Text("No Deployment"))),
-              ),
+            Obx(
+              () => resCtrl.isLoading.value
+                  ? const CircularProgressIndicator()
+                  : Card(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      child: Obx(
+                        () => SizedBox(
+                            height: Get.height * 0.6,
+                            width: Get.width * 0.8,
+                            child: dashCtrl.isdeployed.value
+                                ? SingleChildScrollView(child: ClusterTable())
+                                : const Center(child: Text("No Deployment"))),
+                      ),
+                    ),
             ),
           ],
         ),

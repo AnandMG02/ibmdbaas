@@ -1,11 +1,30 @@
-# Use the nginx base image
-FROM nginx:latest
+# Use the fischerscode/flutter image as the base
+FROM fischerscode/flutter
 
-# Copy the built Flutter web app files to the Nginx root directory
-COPY build/web /usr/share/nginx/html
+# Set the working directory
+WORKDIR /app
 
-# Expose port 80
-EXPOSE 80
+# Create a directory for pubspec files with read-only permissions
+RUN mkdir -m 444 pubspec_files
+COPY pubspec.yaml pubspec.lock ./pubspec_files/
 
-# Start Nginx server
-CMD ["nginx", "-g", "daemon off;"]
+# Change to pubspec_files directory
+WORKDIR /app/pubspec_files
+
+# Install dependencies
+RUN flutter pub get
+
+# Move back to the root directory
+WORKDIR /app
+
+# Copy the entire project
+COPY . .
+
+# Build the Flutter app for release
+RUN flutter build apk --release
+
+# Expose the desired port (if applicable)
+EXPOSE 8080
+
+# Run the Flutter app
+CMD ["flutter", "run", "-d", "device"]

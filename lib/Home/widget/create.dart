@@ -6,6 +6,8 @@ import 'package:ibmdbaas/Home/controller/appwidget.dart';
 import 'package:ibmdbaas/Home/controller/dashcontroller.dart';
 import 'package:ibmdbaas/Home/controller/formdatacontroller.dart';
 import 'package:ibmdbaas/Home/controller/responsecontroller.dart';
+import 'package:ibmdbaas/Home/page/dashboard.dart';
+import 'package:ibmdbaas/Home/page/deployment.dart';
 import 'package:ibmdbaas/Home/widget/clusterbutton.dart';
 import 'package:ibmdbaas/Home/widget/credentials.dart';
 import 'package:ibmdbaas/Home/widget/dropdown.dart';
@@ -38,7 +40,11 @@ class Create extends StatelessWidget {
         GestureDetector(
             onTap: () {
               resCtrl.getData();
-              Get.back();
+              Get.to(
+                Dashboard(),
+                transition: Transition.fade,
+                duration: Duration(seconds: 2), // Set the transition duration
+              );
             },
             child: const Padding(
               padding: EdgeInsets.only(top: 10.0, right: 30),
