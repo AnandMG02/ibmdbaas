@@ -34,7 +34,7 @@ class Deployment extends StatelessWidget {
                   child: IconButton(
                       onPressed: () {
                         resCtrl.changeLoading(true);
-                        resCtrl.getData();
+                        resCtrl.getData(context);
                       },
                       icon: const Icon(Icons.refresh)),
                 )

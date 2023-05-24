@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:ibmdbaas/Home/controller/dashcontroller.dart';
 import 'package:ibmdbaas/Home/controller/datamodel.dart';
 import 'package:http/http.dart' as http;
+import 'package:ibmdbaas/Home/controller/errcontroller.dart';
 import 'package:ibmdbaas/Home/controller/formdatacontroller.dart';
 import 'package:ibmdbaas/Home/controller/responsecontroller.dart';
 import 'package:ibmdbaas/Home/controller/responsemodel.dart';
@@ -20,10 +21,11 @@ class ClusterButton extends StatelessWidget {
   final DashController dashCtrl = Get.find();
   final FormDataController formCtrl = Get.find();
   final ResponseController resCtrl = Get.put(ResponseController());
+  final ErrorController errCtrl = Get.put(ErrorController());
 
   //function
 
-  Future<http.Response> sendData(Data data) async {
+  Future<http.Response> sendData(context, Data data) async {
     final response = await client.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
@@ -53,12 +55,10 @@ class ClusterButton extends StatelessWidget {
 
         resCtrl.updateResData(resValue);
       } catch (e) {
-        print('Error decoding JSON response: $e');
+        errCtrl.resmsg(context, "Cluster is Creating. Please Wait...");
       }
     } else {
-      print("err");
-      print(response.body);
-      print('Error: ${response.statusCode}');
+      errCtrl.err(context, response.statusCode);
     }
 
     return response;
@@ -90,9 +90,9 @@ class ClusterButton extends StatelessWidget {
                         ram: formCtrl.ram.value,
                         storage: formCtrl.storage.value);
 
-                    sendData(data);
+                    sendData(context, data);
                     dashCtrl.deployChange(true);
-                    resCtrl.getData().then(
+                    resCtrl.getData(context).then(
                           (value) => Get.to(
                             Dashboard(),
                             transition: Transition.fade,

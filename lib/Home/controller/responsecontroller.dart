@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:ibmdbaas/Home/controller/dashcontroller.dart';
+import 'package:ibmdbaas/Home/controller/errcontroller.dart';
 import 'package:ibmdbaas/Home/controller/responsemodel.dart';
 import 'package:http/http.dart' as http;
 
 final DashController dashCtrl = Get.find();
 final ResponseController resCtrl = Get.put(ResponseController());
+final ErrorController errCtrl = Get.put(ErrorController());
 
 class ResponseController extends GetxController {
   final client = http.Client();
@@ -14,6 +16,7 @@ class ResponseController extends GetxController {
       "https://ibmdbaas-nodeserver-git-hackathon2023-mongo-t-mobile.mycluster-wdc04-b3c-16x64-bcd9381b2e59a32911540577d00720d7-0000.us-east.containers.appdomain.cloud/pods";
   late List<ResponseValue> resValue = [];
   final RxBool isLoading = false.obs;
+  final RxBool isdeleting = false.obs;
 
   RxList<ResponseValue> data = [
     ResponseValue(
@@ -42,7 +45,7 @@ class ResponseController extends GetxController {
     update();
   }
 
-  Future<http.Response> getData() async {
+  Future<http.Response> getData(context) async {
     final resp = await client.get(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
@@ -51,7 +54,6 @@ class ResponseController extends GetxController {
     if (resp.statusCode == 200) {
       try {
         final res = json.decode(resp.body);
-        print(res);
         resValue.clear();
         if (res.length > 0) {
           for (var i = 0; i < res.length; i++) {
@@ -70,10 +72,10 @@ class ResponseController extends GetxController {
           resCtrl.changeLoading(false);
         }
       } catch (e) {
-        print('Error decoding JSON response: $e');
+        errCtrl.err(context, e);
       }
     } else {
-      print('Error: ${resp.statusCode}');
+      errCtrl.err(context, resp.statusCode);
     }
 
     return resp;

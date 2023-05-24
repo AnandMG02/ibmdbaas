@@ -1,30 +1,22 @@
-# Use the fischerscode/flutter image as the base
-FROM fischerscode/flutter
+# Use an official Flutter runtime as the base image
+FROM cirrusci/flutter:stable
 
-# Set the working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Create a directory for pubspec files with read-only permissions
-RUN mkdir -m 444 pubspec_files
-COPY pubspec.yaml pubspec.lock ./pubspec_files/
+# Copy the entire Flutter app directory into the container
+COPY . /app
 
-# Change to pubspec_files directory
-WORKDIR /app/pubspec_files
+# Create a non-root user and switch to that user
+RUN adduser --disabled-password --gecos '' appuser && \
+    chown -R appuser:appuser /app
+USER appuser
 
-# Install dependencies
+# Install Flutter dependencies
 RUN flutter pub get
-
-# Move back to the root directory
-WORKDIR /app
-
-# Copy the entire project
-COPY . .
 
 # Build the Flutter app for release
 RUN flutter build apk --release
 
-# Expose the desired port (if applicable)
-EXPOSE 8080
-
-# Run the Flutter app
-CMD ["flutter", "run", "-d", "device"]
+# Set the Flutter app as the entry point
+ENTRYPOINT ["flutter", "run", "--release"]
