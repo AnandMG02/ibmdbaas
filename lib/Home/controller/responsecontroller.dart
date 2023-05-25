@@ -17,6 +17,7 @@ class ResponseController extends GetxController {
   late List<ResponseValue> resValue = [];
   final RxBool isLoading = false.obs;
   final RxBool isdeleting = false.obs;
+  final RxBool isgreyed = false.obs;
 
   RxList<ResponseValue> data = [
     ResponseValue(
@@ -55,8 +56,12 @@ class ResponseController extends GetxController {
       try {
         final res = json.decode(resp.body);
         resValue.clear();
+
         if (res.length > 0) {
           for (var i = 0; i < res.length; i++) {
+            if (res[i]['status'] == "Running") {
+              resCtrl.changegrey(false);
+            }
             resValue.add(ResponseValue(
               cluster: res[i]['clustername'],
               user: res[i]['mongoUser'],
@@ -70,12 +75,16 @@ class ResponseController extends GetxController {
         } else {
           dashCtrl.isdeployed.value = false;
           resCtrl.changeLoading(false);
+          resCtrl.changegrey(true);
         }
       } catch (e) {
         errCtrl.err(context, e);
+        resCtrl.changeLoading(false);
+        resCtrl.changegrey(true);
       }
     } else {
       errCtrl.err(context, resp.statusCode);
+      resCtrl.changeLoading(false);
     }
 
     return resp;
@@ -83,6 +92,16 @@ class ResponseController extends GetxController {
 
   changeLoading(value) {
     isLoading.value = value;
+    update();
+  }
+
+  changeDeleting(value) {
+    isdeleting.value = value;
+    update();
+  }
+
+  changegrey(value) {
+    isgreyed.value = value;
     update();
   }
 }

@@ -30,6 +30,8 @@ class ClusterTable extends StatelessWidget {
         errCtrl.resmsg(
             context, responseBody['message']); // Pod deleted successfully!
       } else {
+        resCtrl.changeDeleting(false);
+        resCtrl.changegrey(true);
         errCtrl.resmsg(context, "Pod is deleting. Please Wait..");
       }
     } catch (error) {
@@ -82,28 +84,52 @@ class ClusterTable extends StatelessWidget {
                   ],
                 )),
                 DataCell(Text("${resCtrl.data[i].ip}:${resCtrl.data[i].port}")),
-                DataCell(Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        FlutterClipboard.copy(resCtrl.data[i].url);
-                        errCtrl.resmsg(context, "Url is Copied");
-                      },
-                      icon: const Icon(Icons.copy),
-                    ),
-                    resCtrl.isdeleting.value
-                        ? const CircularProgressIndicator()
-                        : IconButton(
+                DataCell(resCtrl.isgreyed.value
+                    ? Row(
+                        children: [
+                          IconButton(
                             onPressed: () {
-                              deletePod(context, resCtrl.data[i].cluster);
+                              errCtrl.resmsg(context, "Pod is Not Available");
                             },
-                            icon: const Icon(
-                              Icons.delete,
-                              color: Colors.red,
-                            ),
+                            icon: const Icon(Icons.copy),
                           ),
-                  ],
-                )),
+                          resCtrl.isdeleting.value
+                              ? const CircularProgressIndicator()
+                              : IconButton(
+                                  onPressed: () {
+                                    errCtrl.resmsg(
+                                        context, "Pod is Not Available");
+                                  },
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              FlutterClipboard.copy(resCtrl.data[i].url);
+                              errCtrl.resmsg(context, "Url is Copied");
+                            },
+                            icon: const Icon(Icons.copy),
+                          ),
+                          resCtrl.isdeleting.value
+                              ? const CircularProgressIndicator()
+                              : IconButton(
+                                  onPressed: () {
+                                    resCtrl.changeDeleting(true);
+                                    deletePod(context, resCtrl.data[i].cluster);
+                                  },
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                        ],
+                      )),
               ]);
             })),
       ),
