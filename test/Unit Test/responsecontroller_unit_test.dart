@@ -7,6 +7,8 @@ import 'package:ibmdbaas/Home/controller/responsemodel.dart';
 final ResponseController resCtrl = Get.put(ResponseController());
 
 void main() {
+  //testing
+
   group("Response Controller ", () {
     test("Loading value changed on input", () {
       //act
@@ -90,4 +92,8 @@ void main() {
       expect(status, "Running");
     });
   });
+
+  //post test
+  tearDown(() => null);
+  tearDownAll(() => null);
 }
