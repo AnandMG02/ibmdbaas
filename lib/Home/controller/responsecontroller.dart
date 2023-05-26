@@ -30,8 +30,10 @@ class ResponseController extends GetxController {
   ].obs;
 
   updateResData(ResponseValue d) {
-    if (data[0].cluster == "No Cluster") {
-      data.removeAt(0);
+    for (int i = 0; i < data.length; i++) {
+      if (data[i].port == "0000") {
+        data.removeAt(i);
+      }
     }
     data.add(d);
     dashCtrl.isdeployed.value = true;
