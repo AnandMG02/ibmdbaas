@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ibmdbaas/Home/controller/appwidget.dart';
+import 'package:ibmdbaas/Home/widget/appwidget.dart';
 import 'package:ibmdbaas/Home/controller/dashcontroller.dart';
 import 'package:ibmdbaas/Home/controller/formdatacontroller.dart';
 import 'package:ibmdbaas/Home/controller/responsecontroller.dart';
