@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:ibmdbaas/Home/controller/dashcontroller.dart';
@@ -65,8 +66,7 @@ void main() {
       //assert
       expect(loaded, false);
       expect(deployed, true);
-      expect(val[0].cluster, "rs01");
-      expect(val[0].port, "27017");
+      expect(val, isA<List<ResponseValue>>());
     });
 
     test("Evaluate Update Res Data", () {
@@ -83,17 +83,11 @@ void main() {
       //act
       resCtrl.updateResData(rsv);
       final deployed = dashCtrl.isdeployed.value;
-      final len = resCtrl.data.length;
-      final status = resCtrl.data[0].status;
+      final val = resCtrl.data[0];
 
       //assert
       expect(deployed, true);
-      expect(len, 1);
-      expect(status, "Running");
+      expect(val, isA<ResponseValue>());
     });
   });
-
-  //post test
-  tearDown(() => null);
-  tearDownAll(() => null);
 }

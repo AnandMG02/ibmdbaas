@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ibmdbaas/Home/page/dashboard.dart';
+import 'package:ibmdbaas/Home/widget/create.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,6 +14,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      routes: {
+        '/Dashboard': (context) => Dashboard(),
+        '/Create': (context) => Create(),
+      },
       title: 'IBM MDBaaS',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

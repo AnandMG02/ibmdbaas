@@ -7,10 +7,6 @@ import 'package:ibmdbaas/Home/controller/dashcontroller.dart';
 final DashController dashCtrl = Get.put(DashController());
 
 void main() {
-  //pretest
-
-  setUp(() => null);
-  setUpAll(() => null);
   group("DashController ", () {
     test("Given Intial Value of Dashcontroller as Expect", () {
       //arrange
@@ -105,8 +101,4 @@ void main() {
       expect(d2, true);
     });
   });
-
-  //post test
-  tearDown(() => null);
-  tearDownAll(() => null);
 }

@@ -7,10 +7,6 @@ final FormDataController formCtrl = Get.put(FormDataController());
 //unit test
 
 void main() {
-  //pretest
-
-  setUp(() => null);
-  setUpAll(() => null);
   group("Form Data Controller -", () {
     test(" Assinging ClusterName", () {
       //act
@@ -44,8 +40,4 @@ void main() {
       expect(storage, 30);
     });
   });
-
-  //post test
-  tearDown(() => null);
-  tearDownAll(() => null);
 }
