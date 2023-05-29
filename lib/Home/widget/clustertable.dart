@@ -17,8 +17,6 @@ class ClusterTable extends StatelessWidget {
   //function
 
   Future<void> deletePod(context, String podName) async {
-    // final url = Uri.parse('http://localhost:3000/pods/$podName');
-
     final url = Uri.parse(
         "https://ibmdbaas-nodeserver-git-hackathon2023-mongo-t-mobile.mycluster-wdc04-b3c-16x64-bcd9381b2e59a32911540577d00720d7-0000.us-east.containers.appdomain.cloud/pods/$podName");
 
@@ -27,6 +25,7 @@ class ClusterTable extends StatelessWidget {
       final responseBody = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
+        resCtrl.changeDeleting(false);
         errCtrl.resmsg(
             context, responseBody['message']); // Pod deleted successfully!
       } else {
