@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:ibmdbaas/Home/controller/dashcontroller.dart';
 import 'package:ibmdbaas/Home/controller/responsecontroller.dart';
-import 'package:ibmdbaas/Home/controller/responsemodel.dart';
+import 'package:ibmdbaas/Home/controller/responsemodels.dart';
 
 final ResponseController resCtrl = Get.put(ResponseController());
 

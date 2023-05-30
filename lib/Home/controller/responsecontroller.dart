@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:ibmdbaas/Home/controller/dashcontroller.dart';
 import 'package:ibmdbaas/Home/controller/errcontroller.dart';
-import 'package:ibmdbaas/Home/controller/responsemodel.dart';
+import 'package:ibmdbaas/Home/controller/responsemodels.dart';
 import 'package:http/http.dart' as http;
 
 final DashController dashCtrl = Get.find();
