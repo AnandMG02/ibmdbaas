@@ -14,7 +14,7 @@ class AppMainbar extends GetxController {
         title: const Padding(
           padding: EdgeInsets.only(top: 20.0),
           child: Text(
-            "IBM MDBaaS",
+            "IBM DBaaS",
             style: TextStyle(color: Colors.black),
           ),
         ),
