@@ -7,7 +7,10 @@
       "terminal.integrated.shell.linux": null
     },
     "runArgs": ["--privileged"],
-    "extensions": ["dart-code.flutter"],
+    "extensions": [
+		"dart-code.flutter",
+		"ms-vscode-remote.vscode-remote-extensionpack"
+	],
     "workspaceMount": "source=${localWorkspaceFolder}/workspace,target=/home/developer/workspace,type=bind,consistency=delegated",
     "workspaceFolder": "/home/developer/workspace"
   }
