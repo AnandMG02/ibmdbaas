@@ -1,29 +1,41 @@
-FROM ubuntu:18.04
+# Use the official Flutter base image
+FROM openjdk:8-jdk-alpine AS build
 
-# Prerequisites
-RUN apt update && apt install -y curl git unzip xz-utils zip libglu1-mesa openjdk-8-jdk wget
+# Install Flutter SDK
+RUN apk update && \
+    apk add bash git unzip curl && \
+    cd /usr/local/ && \
+    git clone https://github.com/flutter/flutter.git && \
+    export PATH=$PATH:/usr/local/flutter/bin && \
+    flutter precache && \
+    flutter doctor
 
-# Set up new user
-RUN useradd -ms /bin/bash developer
-USER developer
-WORKDIR /home/developer
+# Install a specific Dart SDK version
+RUN flutter config --enable-web
 
-# Prepare Android directories and system variables
-RUN mkdir -p Android/sdk
-ENV ANDROID_SDK_ROOT /home/developer/Android/sdk
-RUN mkdir -p .android && touch .android/repositories.cfg
+# Set the working directory
+WORKDIR /app
 
-# Set up Android SDK
-RUN wget -O sdk-tools.zip https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
-RUN unzip sdk-tools.zip && rm sdk-tools.zip
-RUN mv tools Android/sdk/tools
-RUN cd Android/sdk/tools/bin && yes | ./sdkmanager --licenses
-RUN cd Android/sdk/tools/bin && ./sdkmanager "build-tools;29.0.2" "patcher;v4" "platform-tools" "platforms;android-29" "sources;android-29"
-ENV PATH "$PATH:/home/developer/Android/sdk/platform-tools"
+# Copy the pubspec.yaml and pubspec.lock
+COPY pubspec.yaml pubspec.lock ./
 
-# Download Flutter SDK
-RUN git clone https://github.com/flutter/flutter.git
-ENV PATH "$PATH:/home/developer/flutter/bin"
+# Install dependencies
+RUN flutter pub get
 
-# Run basic check to download Dark SDK
-RUN flutter doctor
+# Copy the entire project
+COPY . .
+
+# Build the Flutter web app
+RUN flutter build web --release
+
+# Use the NGINX base image
+FROM nginx:stable-alpine
+
+# Copy the built app from the previous stage
+COPY --from=build /app/build/web/ /usr/share/nginx/html/
+
+# Expose the NGINX port
+EXPOSE 80
+
+# Start NGINX
+CMD ["nginx", "-g", "daemon off;"]
