@@ -1,41 +1,20 @@
-# Use the official Flutter base image
-FROM openjdk:8-jdk-alpine AS build
+# Use the base Flutter image
+FROM ghcr.io/cirruslabs/flutter:3.10.2
 
-# Install Flutter SDK
-RUN apk update && \
-    apk add bash git unzip curl && \
-    cd /usr/local/ && \
-    git clone https://github.com/flutter/flutter.git && \
-    export PATH=$PATH:/usr/local/flutter/bin && \
-    flutter precache && \
-    flutter doctor
-
-# Install a specific Dart SDK version
-RUN flutter config --enable-web
-
-# Set the working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the pubspec.yaml and pubspec.lock
-COPY pubspec.yaml pubspec.lock ./
+# Copy the pubspec files to the container
+COPY pubspec.* ./
 
-# Install dependencies
+# Install Flutter dependencies
 RUN flutter pub get
 
-# Copy the entire project
+# Copy the entire project directory to the container
 COPY . .
 
 # Build the Flutter web app
-RUN flutter build web --release
+RUN flutter build web
 
-# Use the NGINX base image
-FROM nginx:stable-alpine
-
-# Copy the built app from the previous stage
-COPY --from=build /app/build/web/ /usr/share/nginx/html/
-
-# Expose the NGINX port
-EXPOSE 80
-
-# Start NGINX
-CMD ["nginx", "-g", "daemon off;"]
+# Set the command to serve the built web app
+CMD [ "flutter", "run", "-d", "web-server", "--web-hostname", "0.0.0.0", "--web-port", "8080"]
