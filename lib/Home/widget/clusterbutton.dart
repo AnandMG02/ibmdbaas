@@ -15,9 +15,9 @@ class ClusterButton extends StatelessWidget {
   ClusterButton({super.key});
 
   final client = http.Client();
-  final url = "http://localhost:3000";
-  //final url =
-  //    "https://ibmdbaas-nodeserver-git-hackathon2023-mongo-t-mobile.mycluster-wdc04-b3c-16x64-bcd9381b2e59a32911540577d00720d7-0000.us-east.containers.appdomain.cloud";
+
+  final url =
+      "https://ibmdbaas-nodeserver-git-hackathon2023-mongo-t-mobile.mycluster-wdc04-b3c-16x64-bcd9381b2e59a32911540577d00720d7-0000.us-east.containers.appdomain.cloud";
   final DashController dashCtrl = Get.find();
   final FormDataController formCtrl = Get.find();
   final ResponseController resCtrl = Get.put(ResponseController());
@@ -26,7 +26,6 @@ class ClusterButton extends StatelessWidget {
   //function
 
   Future<http.Response> sendData(context, Data data) async {
-    print("create");
     final response = await client.post(
       Uri.parse(url),
       headers: {
@@ -43,7 +42,6 @@ class ClusterButton extends StatelessWidget {
         'storage': data.storage,
       }),
     );
-    print("eject");
 
     if (response.statusCode == 200) {
       try {
