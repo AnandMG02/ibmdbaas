@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ibmdbaas/Auth/login.dart';
+import 'package:ibmdbaas/Auth/logincontroller.dart';
 import 'package:ibmdbaas/Home/page/dashboard.dart';
 import 'package:ibmdbaas/Home/widget/create.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
+final LoginController lctrl = Get.put(LoginController(), permanent: true);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -23,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           fontFamily: "VarelaRound",
           primaryColor: const Color.fromRGBO(75, 107, 175, 1)),
-      home: Dashboard(),
+      home: Login(),
     );
   }
 }
