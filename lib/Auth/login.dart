@@ -125,7 +125,7 @@ class Login extends StatelessWidget {
                             lctrl.credValidation(lctrl.username, lctrl.passwrd);
                             if (lctrl.isauthenticated.value) {
                               Get.to(Dashboard(),
-                                  transition: Transition.cupertino);
+                                  transition: Transition.leftToRightWithFade);
                             }
                           }
                         },
