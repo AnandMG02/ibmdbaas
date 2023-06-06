@@ -16,7 +16,7 @@ dependencies:
   flutter:
     sdk: flutter
   get: ^4.6.5
-  http: ^0.13.5
+  http: ^0.13.6
   pedantic: ^1.0.0
   
 
